@@ -48,6 +48,18 @@ int bitSubtract(int a, int b) {
     return bitArrayToInt32(bits);
 }
 
+int bitMultiply(int a, int b) {
+    int product = 0;
+    // It is always true that a * b = a * (c + d + e + ...) when c + d + e + ... = b
+    // So, we can do a sum of bit shifts applied to a, where the bit shifts are determined by b's bits.
+    for (int i = 0; i < 32; i++) {
+        if (nthBit(b, i)) {
+            product = bitAdd(product, a << i);
+        }
+    }
+    return product;
+}
+
 int main() {
     std::cout << "5 + 1 = " << std::to_string(bitAdd(5, 1)) << "\n";
     std::cout << "5 + 7 = " << std::to_string(bitAdd(5, 7)) << "\n";
@@ -57,5 +69,11 @@ int main() {
     std::cout << "5 - -7 = " << std::to_string(bitSubtract(5, -7)) << "\n";
     std::cout << "max int + 1 = " << std::to_string(bitAdd(2147483647, 1)) << "\n";
     std::cout << "min int - 1 = " << std::to_string(bitSubtract(-2147483648, 1)) << "\n";
+
+    std::cout << "5 * 7 = " << std::to_string(bitMultiply(5, 7)) << "\n";
+    std::cout << "5 * -7 = " << std::to_string(bitMultiply(5, -7)) << "\n";
+    std::cout << "-5 * -7 = " << std::to_string(bitMultiply(-5, -7)) << "\n";
+    std::cout << "max int * 1 = " << std::to_string(bitMultiply(2147483647, 1)) << "\n";
+    std::cout << "max int * 0 = " << std::to_string(bitMultiply(2147483647, 0)) << "\n";
     return 0;
 }
